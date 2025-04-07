@@ -1,4 +1,4 @@
-import FurnitureConfigurator from '../components/FurnitureConfigurator';
+import FurnitureConfigurator from '../Components/FurnitureConfigurator';
 
 
 export default function Home() {
