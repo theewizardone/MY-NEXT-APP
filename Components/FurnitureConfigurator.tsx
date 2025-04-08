@@ -1,11 +1,13 @@
 "use client";
-import { useState, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
-import * as THREE from 'three';
+import { useState, useMemo } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
+import * as THREE from "three";
+import { motion } from "framer-motion"; // Correct import for Framer Motion
+import { FaWodu, FaRegCircle, FaCube } from "react-icons/fa"; // Correct import for React Icons
 
-type MaterialType = 'wood' | 'metal' | 'plastic';
-type ColorType = 'brown' | 'black' | 'white';
+type MaterialType = "wood" | "metal" | "plastic";
+type ColorType = "brown" | "black" | "white";
 
 interface PriceConfig {
   base: number;
@@ -28,8 +30,8 @@ const PRICE_CONFIG: PriceConfig = {
 };
 
 const FurnitureConfigurator = () => {
-  const [material, setMaterial] = useState<MaterialType>('wood');
-  const [color, setColor] = useState<ColorType>('brown');
+  const [material, setMaterial] = useState<MaterialType>("wood");
+  const [color, setColor] = useState<ColorType>("brown");
   const [size, setSize] = useState(1);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -48,7 +50,7 @@ const FurnitureConfigurator = () => {
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
@@ -68,9 +70,15 @@ const FurnitureConfigurator = () => {
               <mesh position={[0, 0.5, 0]} rotation={[0, Math.PI / 4, 0]} scale={[size, size, size]}>
                 <boxGeometry args={[1, 1.5, 1]} />
                 <meshStandardMaterial
-                  color={color === 'brown' ? '#59332e' : color === 'black' ? '#222222' : '#ffffff'}
-                  metalness={material === 'metal' ? 0.8 : 0.1}
-                  roughness={material === 'wood' ? 0.7 : 0.4}
+                  color={
+                    color === "brown"
+                      ? "#59332e"
+                      : color === "black"
+                      ? "#222222"
+                      : "#ffffff"
+                  }
+                  metalness={material === "metal" ? 0.8 : 0.1}
+                  roughness={material === "wood" ? 0.7 : 0.4}
                 />
               </mesh>
 
@@ -88,32 +96,52 @@ const FurnitureConfigurator = () => {
           <div className="space-y-6">
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Material</label>
-              <select
-                value={material}
-                onChange={(e) => setMaterial(e.target.value as MaterialType)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
+              <div className="flex gap-4">
                 {Object.entries(PRICE_CONFIG.materials).map(([mat, cost]) => (
-                  <option key={mat} value={mat}>
-                    {`${mat.charAt(0).toUpperCase() + mat.slice(1)} (${cost >= 0 ? '+' : ''}$${cost})`}
-                  </option>
+                  <motion.button
+                    key={mat}
+                    onClick={() => setMaterial(mat as MaterialType)}
+                    whileHover={{ scale: 1.1 }}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                      material === mat
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-600"
+                    }`}
+                  >
+                    {mat === "wood" && <FaWodu size={30} />}
+                    {mat === "metal" && <FaRegCircle size={30} />}
+                    {mat === "plastic" && <FaCube size={30} />}
+                    <div className="mt-1 text-xs">{`${cost >= 0 ? "+" : ""}$${cost}`}</div>
+                  </motion.button>
                 ))}
-              </select>
+              </div>
             </div>
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Color</label>
-              <select
-                value={color}
-                onChange={(e) => setColor(e.target.value as ColorType)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
+              <div className="flex gap-4">
                 {Object.entries(PRICE_CONFIG.colors).map(([col, cost]) => (
-                  <option key={col} value={col}>
-                    {`${col.charAt(0).toUpperCase() + col.slice(1)} (${cost >= 0 ? '+' : ''}$${cost})`}
-                  </option>
+                  <motion.button
+                    key={col}
+                    onClick={() => setColor(col as ColorType)}
+                    whileHover={{ scale: 1.1 }}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                      color === col
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-600"
+                    }`}
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-full`}
+                      style={{
+                        backgroundColor:
+                          col === "brown" ? "#59332e" : col === "black" ? "#222222" : "#ffffff",
+                      }}
+                    />
+                    <div className="mt-1 text-xs">{`${cost >= 0 ? "+" : ""}$${cost}`}</div>
+                  </motion.button>
                 ))}
-              </select>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -153,3 +181,4 @@ const FurnitureConfigurator = () => {
 };
 
 export default FurnitureConfigurator;
+
