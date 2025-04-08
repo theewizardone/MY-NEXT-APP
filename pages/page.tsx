@@ -2,8 +2,6 @@
 import { useState, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
-
-
 type MaterialType = 'wood' | 'metal' | 'fabric';
 type ColorType = 'natural' | 'walnut' | 'white' | 'black';
 
