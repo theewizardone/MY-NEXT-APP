@@ -2,7 +2,6 @@
 import { useState, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
-import * as THREE from "three";
 import { motion } from "framer-motion"; // Correct import for Framer Motion
 import { FaWodu, FaRegCircle, FaCube } from "react-icons/fa"; // Correct import for React Icons
 
